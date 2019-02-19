@@ -5,7 +5,9 @@ To have it working you have to recreate the database
 
 go to the command line type: 
  dotnet ef migrations add InitialCreate
+ 
  dotnet ef database update
+ 
 once the database is made take the connection string and put it in the DataContext file at line 21 (Helper\DataContext.cs)
 
 If all of that worked fine it means you have now a ms sql database on your computer 
