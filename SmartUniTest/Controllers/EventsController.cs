@@ -105,26 +105,13 @@ namespace SmartUniTest.Controllers
             }
         }
 
-        //// DELETE: api/Events/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteEvent([FromRoute] int id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var @event = await _context.Events.FindAsync(id);
-        //    if (@event == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Events.Remove(@event);
-        //    await _context.SaveChangesAsync();
-
-        //    return Ok(@event);
-        //}
+        // DELETE: api/Events/5
+        [HttpDelete("{id}")]
+        public ActionResult DeleteEvent([FromRoute] int id)
+        {
+            _eventService.Delete(id);
+            return Ok();
+        }
 
         //private bool EventExists(int id)
         //{

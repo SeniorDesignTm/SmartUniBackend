@@ -29,7 +29,12 @@ namespace SmartUniTest.Services
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var ev = _context.Events.Find(id);
+            if (ev != null)
+            {
+                _context.Events.Remove(ev);
+                _context.SaveChanges();
+            };
         }
 
         public IQueryable GetAll()
