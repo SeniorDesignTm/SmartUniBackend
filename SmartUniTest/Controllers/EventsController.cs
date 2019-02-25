@@ -51,40 +51,21 @@ namespace SmartUniTest.Controllers
             return Ok(ev);
         }
 
-        //// PUT: api/Events/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutEvent([FromRoute] int id, [FromBody] Event @event)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != @event.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(@event).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!EventExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
+        // PUT: api/Events/5
+        [HttpPut]
+        public IActionResult PutEvent([FromBody]EventTransferObject eventTransferObject)
+        {
+            var @event = _mapper.Map<Event>(eventTransferObject);
+            try
+            {
+                _eventService.UpdateEvent(@event);
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
         // POST: api/Events
         [HttpPost]
@@ -110,7 +91,7 @@ namespace SmartUniTest.Controllers
         public ActionResult DeleteEvent([FromRoute] int id)
         {
             _eventService.Delete(id);
-            return Ok();
+            return Ok(("{ } Deleted",  id));
         }
 
         //private bool EventExists(int id)

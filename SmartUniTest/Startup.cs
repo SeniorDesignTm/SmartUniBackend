@@ -17,6 +17,9 @@ using Microsoft.IdentityModel.Tokens;
 using SmartUniTest.Helpers;
 using SmartUniTest.Services;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Converters;
 
 namespace SmartUniTest
 {
@@ -33,11 +36,19 @@ namespace SmartUniTest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+            .AddJsonOptions(options =>
+            {
+            options.SerializerSettings.Formatting = Formatting.Indented;
+            options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            options.SerializerSettings.Converters.Add(new StringEnumConverter());
+            });
             services.AddCors();
             services.AddAutoMapper();
             services.AddDbContext<DataContext>(options => options.UseSqlServer("Server = (localdb)\\MSSQLLocalDB; Database = SmarUniDB; Trusted_Connection = True;"));
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+            
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
@@ -92,6 +103,7 @@ namespace SmartUniTest
                 app.UseHsts();
             }
 
+            
             app.UseHttpsRedirection();
             app.UseMvc();
         }

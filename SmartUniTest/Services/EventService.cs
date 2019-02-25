@@ -18,6 +18,7 @@ namespace SmartUniTest.Services
 
         public Event Create(Event @event)
         {
+            
             if (string.IsNullOrEmpty(@event.Date) || string.IsNullOrEmpty(@event.Description))
                 throw new AppException("Date and Description are required");
 
@@ -54,7 +55,17 @@ namespace SmartUniTest.Services
 
         public void UpdateEvent(Event @event)
         {
-            throw new NotImplementedException();
+
+            var ev = _context.Events.Find(@event.Id);
+
+            if ( ev == null)
+                throw new AppException("Event not found");
+
+                ev.Date = @event.Date;
+                ev.Description = @event.Description;
+                ev.UserEvents = @event.UserEvents;
+                _context.Events.Update(ev);
+                _context.SaveChanges();
         }
     }
 }
